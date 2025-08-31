@@ -1,0 +1,95 @@
+syntax = "proto3";
+package user.v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/poly-workshop/auth-portal/gen/user/v1;user_v1_pb";
+
+enum UserRole {
+  USER_ROLE_UNSPECIFIED = 0;
+  USER_ROLE_USER = 1;
+  USER_ROLE_ADMIN = 2;
+}
+
+message User {
+  string id = 1;
+  google.protobuf.Timestamp created_at = 2;
+  google.protobuf.Timestamp updated_at = 3;
+  string name = 4;
+  string email = 5;
+  UserRole role = 6;
+  optional string github_id = 7;
+}
+
+service UserService {
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {
+    option (google.api.http) = {
+      post: "/v1/users"
+      body: "*"
+    };
+  }
+  rpc GetCurrentUser(GetCurrentUserRequest) returns (GetCurrentUserResponse) {
+    option (google.api.http) = {get: "/v1/users/me"};
+  }
+  rpc GetUser(GetUserRequest) returns (GetUserResponse) {
+    option (google.api.http) = {get: "/v1/users/{id}"};
+  }
+  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse) {
+    option (google.api.http) = {get: "/v1/users"};
+  }
+  rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse) {
+    option (google.api.http) = {
+      patch: "/v1/users/{id}"
+      body: "*"
+    };
+  }
+  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {
+    option (google.api.http) = {delete: "/v1/users/{id}"};
+  }
+}
+
+message CreateUserRequest {
+  string name = 1;
+  string email = 2;
+  UserRole role = 3;
+  optional string password = 4;
+  optional string github_id = 5;
+}
+message CreateUserResponse {}
+
+message GetCurrentUserRequest {}
+message GetCurrentUserResponse {
+  User user = 1;
+}
+
+message GetUserRequest {
+  string id = 1;
+}
+message GetUserResponse {
+  User user = 1;
+}
+
+message ListUsersRequest {
+  uint64 page = 1;
+  uint64 page_size = 2;
+}
+message ListUsersResponse {
+  repeated User users = 1;
+  uint64 total = 2;
+}
+
+message UpdateUserRequest {
+  string id = 1;
+  optional string name = 2;
+  optional string email = 3;
+  optional UserRole role = 4;
+  optional string password = 5;
+  optional string github_id = 6;
+}
+message UpdateUserResponse {}
+
+message DeleteUserRequest {
+  string id = 1;
+}
+message DeleteUserResponse {}
