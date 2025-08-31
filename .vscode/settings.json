@@ -1,0 +1,7 @@
+{
+  "protoc": {
+    "options": ["--proto_path=${workspaceRoot}/proto"]
+  },
+  "makefile.configureOnOpen": false,
+  "go.testFlags": ["-v", "-count=1"]
+}
