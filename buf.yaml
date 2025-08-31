@@ -1,0 +1,4 @@
+version: v2
+name: buf.build/poly-workshop/auth-portal
+deps:
+  - buf.build/googleapis/googleapis

@@ -1,0 +1,45 @@
+syntax = "proto3";
+option go_package = "github.com/poly-workshop/auth-portal/pkg/proto";
+
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+
+message UserToken {
+  string token = 1;
+  google.protobuf.Timestamp expires_at = 2;
+}
+
+message LoginSession {
+  string id = 1;
+  google.protobuf.Timestamp expires_at = 3;
+}
+
+service AuthService {
+  rpc GetOAuthCodeURL(GetOAuthCodeURLRequest) returns (GetOAuthCodeURLResponse) {
+    option (google.api.http) = { get: "/v1/oauth/url" };
+  }
+  rpc LoginByOAuth(LoginByOAuthRequest) returns (LoginSession);
+  rpc LoginByPassword(LoginByPasswordRequest) returns (LoginSession);
+  rpc GetUserToken(GetUserTokenRequest) returns (UserToken);
+}
+
+message GetOAuthCodeURLRequest {
+  string provider = 1;
+  optional string redirect_url = 2;
+}
+message GetOAuthCodeURLResponse { 
+  string url = 1; 
+  string state = 2;
+}
+
+message LoginByOAuthRequest {
+  string code = 1;
+  string state = 2;
+}
+
+message LoginByPasswordRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message GetUserTokenRequest { string session_id = 1; }

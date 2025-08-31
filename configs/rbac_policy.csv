@@ -1,0 +1,11 @@
+p, admin, /UserService/CreateUser
+p, admin, /UserService/GetUser
+p, admin, /UserService/GetCurrentUser
+p, admin, /UserService/ListUsers
+p, admin, /UserService/UpdateUser
+p, admin, /UserService/DeleteUser
+
+p, user, /UserService/GetCurrentUser
+p, user, /UserService/GetUser
+
+g, admin, user
